@@ -1,4 +1,4 @@
-import  psycopg2
+import psycopg2
 
 # sql query
 sql = """INSERT INTO temperature_logger(temperature, time)

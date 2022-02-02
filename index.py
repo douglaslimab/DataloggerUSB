@@ -4,6 +4,12 @@ import json
 
 app = Flask(__name__)
 url = "http://dougserver:8000/relay"
+plcUrl = "http://192.168.43.38/?r"
+
+@app.route('/arduino/<relay>/<state>')
+def arduino(relay, state):
+    req = requests.get(plcUrl + relay + state)
+    return 'Relay 1'
 
 @app.route("/")
 def home():

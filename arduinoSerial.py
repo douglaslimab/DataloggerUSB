@@ -26,7 +26,7 @@ def insert_temperature(temperature, time):
         host = "localhost",
         database = "temperature",
         user = "postgres",
-        password = "Classic-2011"
+        password = "cortsolo2006"
     )
 
     temp_id = None
@@ -51,15 +51,7 @@ def insert_temperature(temperature, time):
 
     return temp_id
 
-
 while True:
-#    num = input("Enter a number: ") # Taking input from user
-#    temp_pack.insert(0, str(value, "utf-8"))
-#    if(len(temp_pack) >= 1):
-#        sum_up = sum(temp_pack)/len(temp_pack)
-#        print(sum_up)
-#    print(temp_pack)
-
     # get data
     start = time.time()
     value = arduino_read()
@@ -77,8 +69,3 @@ while True:
         time.sleep(waiting_time - (end - start))
     else:
         time.sleep(end - start)
-
-
-#   next steps
-#   save data do csv
-#   plot data

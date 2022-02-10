@@ -1,5 +1,10 @@
-const pg = require('pg')
+PORT = 8000;
+const express = require('express');
+var cors = require('cors');const pg = require('pg')
 //const client = require('./client')
+
+app = express();
+app.use(cors());
 
 const client = new pg.Client({
     host: "localhost",
@@ -24,7 +29,18 @@ async function read_db(){
     read_temperature = await client.query('SELECT temperature FROM temperature_logger ORDER BY temp_id DESC LIMIT 1')
     await client.end();
 
-    console.log(read_temperature.rows[0].temperature);
+    console.log(read_temperature.rows);
+    return read_temperature.rows[0]
 }
 
-module.exports = read_db;
+app.get('/', (req, res) => {
+    res.send("this is node home..");
+})
+
+app.get('/temperature', (req, res) => {
+    console.log(read_db);
+    res.json(read_db);
+})
+
+
+app.listen(PORT, () => console.log(`Server running on  PORT: ${PORT}..`));

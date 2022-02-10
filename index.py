@@ -13,7 +13,7 @@ def arduino(relay, state):
 
 @app.route("/")
 def home():
-    return "this is home.."
+    return "py home.."
 
 @app.route("/relay")
 def relay():

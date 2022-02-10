@@ -10,12 +10,17 @@ const int B = 4275;
 const int R0 = 100000;
 //  Time Control
 unsigned long currentMillis;
-long previousMillis = 0;
+long previousMillis1 = 0;
 long previousMillis2 = 0;
 long previousMillis3 = 0;
-float loopTime1 = 1000;
-float loopTime2 = 300;
-float loopTime3 = 300;
+long previousMillis4 = 0;
+
+int loopTime1 = 1000;
+int loopTime2 = 300;
+int loopTime3 = 300;
+int loopTime4 = 100;
+
+bool serialConnection = false;
 
 void setup() {
   Serial.begin(115200);
@@ -34,8 +39,8 @@ void loop() {
   currentMillis = millis();
 
   //  Send Data ------------------------------------------------------------------------  
-  if (currentMillis - previousMillis >= loopTime1) {
-    previousMillis = currentMillis;
+  if (currentMillis - previousMillis1 >= loopTime1) {
+    previousMillis1 = currentMillis;
 
     Serial.println(getTemperature());
   }
@@ -65,6 +70,25 @@ void loop() {
     if(menu)
     updateMenu();
   }  
+
+  // Confirm connection -------------------------------------------------------------------------------
+  if (currentMillis - previousMillis4 >= loopTime4){
+    previousMillis4 = currentMillis;
+    char serial_pack[4];
+
+    if (Serial.available()){
+      for (int i = 0; i < 4; i++){
+        serial_pack[i] = Serial.read();
+        delay(5);
+      }
+    
+      lcd.setCursor(15, 0);
+      lcd.print(serial_pack[0]);
+    } else {
+      lcd.setCursor(15, 0);
+      lcd.print("-");
+    }
+  }
 //  delay(200);
 }
 

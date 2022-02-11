@@ -47,7 +47,7 @@ def connect():
     timer = screen.after(1000, connect)
 
 
-label = Label(screen, textvariable='')
+label = Label(screen, text='')
 label.pack()
 
 con_btn = Button(screen, text="Connect", command=connect)

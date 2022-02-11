@@ -15,9 +15,9 @@ long previousMillis2 = 0;
 long previousMillis3 = 0;
 long previousMillis4 = 0;
 
-int loopTime1 = 1000;
-int loopTime2 = 300;
-int loopTime3 = 300;
+int loopTime1 = 700;
+int loopTime2 = 100;
+int loopTime3 = 100;
 int loopTime4 = 100;
 
 bool serialConnection = false;

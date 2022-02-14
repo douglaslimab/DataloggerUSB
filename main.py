@@ -31,7 +31,7 @@ def write(tx_data):
 
 
 def save():
-    w = csv.writer(open("output", "w"))
+    w = csv.writer(open("output.csv", "w"))
     for key, value in sample.items():
         w.writerow([key, value])
 

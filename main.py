@@ -4,17 +4,19 @@ import psycopg2
 import time
 import csv
 import matplotlib.pyplot as plt
+from tk_test import App
 
 
 screen = Tk()
 screen.title("Datalogger")
 screen.geometry("400x100")
+screen.resizable(False, False)
 
 display = Frame(screen)
-display.pack(expand="false", pady=10)
+display.pack(expand=0, pady=10)
 
 control = Frame(screen)
-control.pack(expand="false")
+control.pack(expand=0)
 
 
 device = serial.Serial(port='COM4', baudrate=115200, timeout=0.1)

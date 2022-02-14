@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 screen = Tk()
-screen.title = "Datalogger"
+screen.title("Datalogger")
 screen.geometry("400x100")
 
 display = Frame(screen)

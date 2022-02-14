@@ -1,11 +1,19 @@
 import serial
 from tkinter import *
+from tkinter import ttk
 import psycopg2
 import time
 
 screen = Tk()
 screen.title = "Datalogger"
-screen.geometry("400x400")
+screen.geometry("400x100")
+
+display = Frame(screen)
+display.pack(expand="false", pady=10)
+
+control = Frame(screen)
+control.pack(expand="false")
+
 
 device = serial.Serial(port='COM4', baudrate=115200, timeout=0.1)
 
@@ -14,8 +22,10 @@ def read():
     rx = device.readline()
     return rx[:5]
 
+
 def write(tx_data):
     device.write(bytes(tx_data, 'utf-8'))
+
 
 def disconnect():
     global device
@@ -25,7 +35,8 @@ def disconnect():
     device = None
     label.configure(text='')
     label_time.configure(text='')
-    check.configure(text=str('Disconnected..'))
+    check.configure(text=str('Disconnected..'), fg="#FF0000")
+
 
 def connect():
     global timer
@@ -37,9 +48,10 @@ def connect():
 
         data = read()
         write('c')
-        check.configure(text=str('Connected..'))
+        check.configure(text=str('Connected..'), fg="#00FF00")
 
-        time_logger = str(time.localtime().tm_hour) + ':' + str(time.localtime().tm_min) + ':' + str(time.localtime().tm_sec)
+        time_logger = str(time.localtime().tm_hour) + ':' + str(time.localtime().tm_min) + ':' + str(
+            time.localtime().tm_sec)
 
         if str(data, 'utf-8') != '':
             label.configure(text=str(data, 'utf-8'))
@@ -54,15 +66,16 @@ def connect():
 
     timer = screen.after(1000, connect)
 
+
 def db_insert(temperature, time):
     sql = """INSERT INTO temperature_logger(temperature, time)
              VALUES(%s, %s) RETURNING temp_id"""
 
     conn = psycopg2.connect(
-        host = "localhost",
-        database = "temperature",
-        user = "postgres",
-        password = "cortsolo2006"
+        host="localhost",
+        database="temperature",
+        user="postgres",
+        password="cortsolo2006"
     )
 
     temp_id = None
@@ -83,23 +96,25 @@ def db_insert(temperature, time):
 
     return temp_id
 
+
 def db_read(table, columnA, columnB, n_rows):
     row = {}
     return row
 
-label = Label(screen, text='')
-label.pack()
 
-label_time = Label(screen, text='')
-label_time.pack()
+label = Label(display, text='', width=20, background="#333333", fg="#00FF00")
+label.grid(column=0, row=0)
 
-con_btn = Button(screen, text="Connect", command=connect)
-con_btn.pack()
+label_time = Label(display, text='', width=20, background="#333333", fg="#00FF00")
+label_time.grid(column=1, row=0)
 
-dis_btn = Button(screen, text="Disconnect", command=disconnect)
-dis_btn.pack()
+con_btn = Button(control, text="Connect", command=connect)
+con_btn.grid(column=0, row=0)
 
-check = Label(screen, text='Disconnected..')
-check.pack()
+dis_btn = Button(control, text="Disconnect", command=disconnect)
+dis_btn.grid(column=1, row=0)
+
+check = Label(control, text='Disconnected..', width=20, fg="#FF0000")
+check.grid(column=0, row=1, columnspan=2)
 
 screen.mainloop()

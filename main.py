@@ -1,8 +1,10 @@
 import serial
 from tkinter import *
-from tkinter import ttk
 import psycopg2
 import time
+import csv
+import matplotlib.pyplot as plt
+
 
 screen = Tk()
 screen.title = "Datalogger"
@@ -16,6 +18,7 @@ control.pack(expand="false")
 
 
 device = serial.Serial(port='COM4', baudrate=115200, timeout=0.1)
+sample = {}
 
 
 def read():
@@ -25,6 +28,20 @@ def read():
 
 def write(tx_data):
     device.write(bytes(tx_data, 'utf-8'))
+
+
+def save():
+    w = csv.writer(open("output", "w"))
+    for key, value in sample.items():
+        w.writerow([key, value])
+
+
+def generate_graphic():
+    time = list(sample.keys())
+    temp = list(sample.values())
+
+    plt.plot(time, temp)
+    plt.show()
 
 
 def disconnect():
@@ -57,6 +74,7 @@ def connect():
             label.configure(text=str(data, 'utf-8'))
             label_time.configure(text=time_logger)
             print(db_insert(str(data, 'utf-8'), time_logger))
+            sample[time_logger] = str(data, 'utf-8')
             print(f"{str(data, 'utf-8')} | {time_logger}")
     except:
         if device != None:
@@ -113,6 +131,12 @@ con_btn.grid(column=0, row=0)
 
 dis_btn = Button(control, text="Disconnect", command=disconnect)
 dis_btn.grid(column=1, row=0)
+
+sav_btn = Button(control, text="Save", command=save)
+sav_btn.grid(column=2, row=0)
+
+graph_btn = Button(control, text="Graphic", command=generate_graphic)
+graph_btn.grid(column=3, row=0)
 
 check = Label(control, text='Disconnected..', width=20, fg="#FF0000")
 check.grid(column=0, row=1, columnspan=2)

@@ -23,7 +23,7 @@ app.get('/:sensor', async (req, res) => {
     read_temperature = await client.query(`SELECT ${sensor}, time FROM temperature_logger ORDER BY temp_id DESC LIMIT 20`)
     await client.end();
 
-    res.send(read_temperature.rows)
+    res.send(read_temperature.rows[0])
 })
 
 app.listen(PORT, () => console.log(`Server running on  PORT: ${PORT}..`));
